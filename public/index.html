@@ -1,0 +1,88 @@
+<!--MIT License
+
+Copyright (c) 2021 by Chris Sev (https://codepen.io/chris__sev/pen/zYxQKrP)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Obtain VALORANT player's name from puuid">
+  <meta name="keywords" content="valorant, VALORANT, puuid, uuid, VALORANT uuid, valorant puuid">
+  <meta name="author" content="Jakkaphat Chalermphanaphan">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VALORANT puuid to Name</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/TypewriterJS/2.18.2/core.min.js" integrity="sha512-g8TodWNzrsxJkADtGuwwvVND2MVKUuisGWZsj2/NtLA/XFDq9biQpeDMcJ8iu71OpabLfDxfEAdTQFdXjmV60A==" crossorigin="anonymous" charset="utf-8" referrerpolicy="no-referrer"></script>
+  <script>
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
+  </script>
+  <link rel="stylesheet" href="./css/styles.css"> <!--Tailwindcss v3.0.15-->
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-zinc-200 dark:bg-gray-800">
+  <div class="flex justify-between text-base text-black bg-zinc-400 dark:text-white dark:bg-gray-900 drop-shadow-2xl">
+    <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-3">
+      <svg id="theme-toggle-dark-icon" class="w-7 h-7 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+      </svg>
+      <svg id="theme-toggle-light-icon" class="w-7 h-7 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+      </svg>
+    </button>
+    </div>
+  </div>
+
+  <!-- main -->
+  <div class="flex justify-center pt-20">
+    <div>
+      <!--<img class="w-auto ml-auto mr-auto mb-3 drop-shadow-2xl" src="https://res.cloudinary.com/dynrld3nm/image/upload/v1643133588/godeapp_dfs94p.webp">-->
+      <h1 class="text-stone-900 dark:text-white justify-center text-center text-6xl">VALORANT puuid to Name</h1>
+      <div class="mr-auto mb-5 py-5">
+        <p id="display" class="hidden text-stone-900 dark:text-white justify-center text-4xl py-4 text-center">
+        <br>
+      </div>
+      <div class="mr-auto mb-5">
+        <select class="ml-auto justify-center w-full rounded-lg shadow" name="region" id="reg">
+          <option value="ap">Asia Pacific</option>
+          <option value="na">North America</option>
+          <option value="eu">Europe</option>
+          <option value="kr">Korea</option>
+          <option value="latam">Latin America</option>
+          <option value="br">Brazil</option>
+        </select>
+      </div>
+      <div class="flex border drop-shadow-lg bg-slate-300 border-transparent dark:bg-gray-600 border-4 rounded-full p-4 shadow text-xl">
+        <input id="input" type="text" placeholder="puuid" class="placeholder:italic placeholder:text-stone-900/50 dark:placeholder:text-white/50 w-full dark:text-white bg-slate-300 dark:bg-gray-600 outline-none px-3">
+      </div>
+      <div class="mt-8 text-center drop-shadow-xl">
+        <button id="button" class="mr-3 bg-gray-300 pointer-events-auto py-3 px-4 rounded-full w-auto hover:bg-gray-400 hover:border-gray-500">Submit</button>
+      </div>
+    </div>
+  </div>
+  <!-- footer -->
+  <!--<div class="fixed bottom-0 bg-inherit w-full justify-center text-stone-900 dark:text-slate-300 text-xxs">
+    <div class="flex justify-center">
+      <a href="https://github.com/godeProject/godeweb/commits/main" target="_blank" class="block px-3">dev - v0.2.1-rc4</a>
+    </div>
+    <div class="flex justify-center">
+      <a href="https://github.com/gxjakkap" target="_blank" class="block px-3">Made with ❤️ by GuntxJakka</a>
+    </div>
+    <div class="flex justify-center">
+      <a href="./about#:~:text=Read%20more%20here.-,License,-MIT%20License" class="block px-3 py-1">Copyright © 2022 g;ode Project. Click here to view license.</a>
+    </div>
+  </div>-->
+  <script src="./js/index.js"></script>
+</body>
+</html>
+
