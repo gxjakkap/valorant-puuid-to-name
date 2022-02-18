@@ -14,6 +14,8 @@ button.addEventListener("click",function(event, input){
       textdisplay.classList.remove('hidden');
       textdisplay.innerText = "Please wait before you click again! (to avoid rate limiting)";
     } else{
+      var textdisplay = document.getElementById("display");
+      textdisplay.innerText = "Loading...";
       lastclick = Date.now();
       var url = "https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/"+reg+"/"+userInput;
       fetch(url, {method:"GET"})
@@ -25,7 +27,6 @@ button.addEventListener("click",function(event, input){
         throw new Error(Error);
       }
       }).then(function(data){
-      var textdisplay = document.getElementById("display");
       textdisplay.classList.remove('hidden');
       textdisplay.innerText = "Player's name: "+data.data.name+"#"+data.data.tag;
     })
